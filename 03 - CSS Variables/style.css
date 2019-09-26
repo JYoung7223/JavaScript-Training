@@ -1,0 +1,33 @@
+body {
+    text-align: center;
+    background: #193549;
+    color: white;
+    font-family: 'helvetica neue', sans-serif;
+    font-weight: 100;
+    font-size: 50px;
+}
+
+.controls {
+    margin-bottom: 50px;
+}
+
+input {
+    width: 100px;
+}
+
+.image {
+    padding: var(--spacing); /* padding will be set to the variable spacing */
+    background: var(--base); /* background color of image set to the variable base */
+    filter: blur(var(--blur)); /* blur the image based on the value of the variable blur */
+    height: 400px;
+    width: 600px;
+}
+.baseText {
+    color: var(--base);
+}
+
+:root { /* top level variables, (should figure out how to not make it top level) */
+    --spacing: 10px; /* initial value of "spacing" variable */
+    --blur: 10 px; /* initial value of "blur" variable */
+    --base: blue; /* initial value of "base" variable */
+}
