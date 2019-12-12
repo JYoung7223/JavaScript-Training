@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    const cities = [];
+    fetch(endpoint) // fetch returns promise so need to use .then to get results
+        .then(rawData => rawData.json())  // .json() returns a promise also so
+        .then(parsedData => cities.push(...parsedData));  // use push to store results in cities, use ... to store elements individual instead of as a single array object.
+
+    function findMatches(wordtoMatch, arrayToMatch) {
+        return arrayToMatch.filter(place => {
+            // Figure out if city or state contains wordToMatch
+            const regEx = new RegExp(wordtoMatch, 'gi'); // g = global (entire string), i = case insensitive
+            return place.city.match(regEx) || place.state.match(regEx);
+        });
+    }
+
+    function displayMatches() {
+        const matchingArray = findMatches(this.value, cities);
+        const html = matchingArray.map(matchingPlace => {
+            const regEx = new RegExp(this.value, 'gi');
+            const cityMatchHighlight = matchingPlace.city.replace(regEx, `<span class="hl">${this.value}</span>`);
+            const stateMatchHighlight = matchingPlace.state.replace(regEx, `<span class="hl">${this.value}</span>`);
+            const formattedPopulation = numberWithCommas(matchingPlace.population);
+
+            return `
+                <li>
+                    <span class="name">${cityMatchHighlight}, ${stateMatchHighlight}</span>
+                    <span class="population">${formattedPopulation}</span>
+                </li>
+                `;
+        }).join(''); // Turns multiple array item into single long string.
+        suggestions.innerHTML = html;
+    }
+
+    function numberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    const searchInput = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
+
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+
+</script>
+</body>
+</html>
