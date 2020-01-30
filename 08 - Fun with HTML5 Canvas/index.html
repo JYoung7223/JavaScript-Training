@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800" style="border: .4rem solid black;"></canvas>
+<script>
+    const canvas = document.querySelector("#draw");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const context = canvas.getContext("2d");
+    let lineColor = 0;
+    let lineGrow = true;
+    context.strokeStyle = lineColor;
+    context.lineJoin = "round";
+    context.lineCap = "round";
+    context.globalCompositeOperator = "source-in"; // Lookup globalCompositeOperation for options.
+
+    let shouldDraw = false;
+    let startX = 0;
+    let startY = 0;
+
+
+    canvas.addEventListener("mousedown", startDraw);
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("mouseup", stopDraw);
+    canvas.addEventListener("mouseout", stopDraw);
+    
+    function startDraw(event) {
+        [startX, startY] = [event.offsetX, event.offsetY];
+        shouldDraw = true;
+    }
+
+    function draw(event) {
+        if (!shouldDraw) return;
+
+        // Draw lines
+        context.beginPath();
+        context.moveTo(startX, startY);
+        context.lineTo(event.offsetX, event.offsetY);
+        context.stroke();
+
+        // Change Color
+        lineColor++;
+        lineColor = lineColor % 360; // Not required, will auto recycle if not modded.
+        context.strokeStyle = `hsl(${lineColor}, 100%, 50%)`; // look at "mother-effing hsl for additional info.
+
+        // Continue at last end, until unclicked or moved of screen
+        [startX, startY] = [event.offsetX, event.offsetY];
+
+        // Change line thickness
+        if ((context.lineWidth > 30) || (context.lineWidth <= 1)) {
+            lineGrow = !lineGrow;
+        }
+        if (lineGrow) { context.lineWidth++; }
+        else { context.lineWidth--; }        
+    }
+
+    function stopDraw(event) {        
+        shouldDraw = false;
+    }
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
