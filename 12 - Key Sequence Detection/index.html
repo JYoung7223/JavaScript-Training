@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>  
+</head>
+<body>
+
+<script>
+    
+    /** Hold sequence */
+    const passwordKeySequence = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a", "Enter"];
+    let currentSequence = [];
+    let runningSequence = [];
+
+    /** Helper Functions */
+    /**
+     * This function will take the most current event and check to see if it activates the secret key code sequence
+     * @param event
+     */
+    function checkSequence(event) {        
+        if ((currentSequence.length < passwordKeySequence.length) && (passwordKeySequence[currentSequence.length] == event.key)) {
+            currentSequence[currentSequence.length] = event.key;
+        } else {
+            currentSequence = [];
+        }
+        if (currentSequence.length == passwordKeySequence.length) {
+            document.body.style.backgroundColor = "teal";
+            currentSequence = [];
+        } else {
+            document.body.style.backgroundColor = "white";
+        }
+
+        // Or you can do above like below
+
+        runningSequence.push(event.key);
+        runningSequence.splice(-passwordKeySequence.length - 1, runningSequence.length - passwordKeySequence.length); // neg index starts at end of array and counts back. (Out of Bounds stops at beg/end)
+        if (runningSequence.join("") == passwordKeySequence.join("")) {
+            console.log("Ding Ding!");
+        }
+    }
+
+    /** Event Listeners */
+    document.addEventListener("keyup", checkSequence);
+
+</script>
+
+</body>
+</html>
