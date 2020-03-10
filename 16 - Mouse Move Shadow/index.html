@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+</head>
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+
+  <style>
+  html {
+    color: black;
+    font-family: sans-serif;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+  }
+
+  h1 {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    font-size: 100px;
+  }
+  </style>
+
+<script>
+    // Get elements
+    const hero = document.querySelector(".hero");
+    const text = document.querySelector("h1");
+    const stretchMax = 100; // 100 px
+
+    // Add Listeners
+    hero.addEventListener("mousemove", updateShadow);
+
+    // Helper Functions
+    function updateShadow(event) {
+        // const { offsetWidth: width, offsetHeight: height } = hero;
+        // above same as
+        const width = hero.offsetWidth;
+        const height = hero.offsetHeight;
+
+        let { offsetX: x, offsetY: y } = event;
+        // Check if outside "hero" element or child "h1" element
+        if (this !== event.target) {
+            x = x + event.target.offsetLeft;
+            y = y + event.target.offsetTop;
+        }
+
+        // Calculate shadow stretch
+        const distanceFromCenterX = (x - width / 2);
+        const percentFromCenterX = distanceFromCenterX / (width / 2);
+        const xStretch = percentFromCenterX * stretchMax; 
+
+        const yStretch = ((y - height / 2) / (height / 2)) * stretchMax;
+
+        // Update shadow
+        text.style.textShadow = `
+                ${xStretch}px ${yStretch}px 0 rgba(255,0,0,0.7),
+                ${1 - xStretch}px ${yStretch}px 0 rgba(122,0,122,0.7),
+                ${xStretch}px ${1 - yStretch}px 0 rgba(0,122,122,0.7),
+                ${1 - xStretch}px ${1 - yStretch}px 0 rgba(122,122,0,0.7)
+                `;
+    }
+</script>
+</body>
+</html>
