@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Photo Booth!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="photobooth">
+      <div class="controls">
+          <div class="take-photo"><button onClick="takePhoto()">Take Photo</button></div>
+          <!-- Shutter Speed Effect-->
+          <h3>Shutter Speed <input type="checkbox" id="shutter-active"></h3>
+          <div class="shutter">
+              <label for="speed">Shutter Speed:</label>
+              <input type="range" min="0.1" max="1" value="1" name="speed" step="0.1" />
+          </div>
+          <!-- Color Effect-->
+          <h3>Color Adjustments <input type="checkbox" id="adjust-rgb-active"></h3>          
+          <div class="adjust-rgb">
+              <label for="r">Red Adjust:</label>
+              <input type="range" min="-100" max="100" value="0" name="r" step="10" />
+              <label for="g">Green Adjust:</label>
+              <input type="range" min="-100" max="100" value="0" name="g" step="10" />
+              <label for="b">Blue Adjust:</label>
+              <input type="range" min="-100" max="100" value="0" name="b" step="10" />
+          </div>
+          <!-- Green Screen Effect-->
+          <h3>Green Screen Color Filter <input type="checkbox" id="filter-rgb-active"></h3>          
+          <div class="filter-rgb">
+              <label for="rmin">Red Min:</label>
+              <input type="range" min=0 max=255 name="rmin">
+              <label for="rmax">Red Max:</label>
+              <input type="range" min=0 max=255 name="rmax">
+              <br>
+              <label for="gmin">Green Min:</label>
+              <input type="range" min=0 max=255 name="gmin">
+              <label for="gmax">Green Max:</label>
+              <input type="range" min=0 max=255 name="gmax">
+              <br>
+              <label for="bmin">Blue Min:</label>
+              <input type="range" min=0 max=255 name="bmin">
+              <label for="bmax">Blue Max:</label>
+              <input type="range" min=0 max=255 name="bmax">
+          </div>
+          <!-- Color Split Effect-->
+          <h3>Color Shift <input type="checkbox" id="split-rgb-active"></h3>          
+          <div class="split">
+              <label for="offset">Color Split:</label>
+              <input type="range" min="0" max="600" name="offset" step="4" />
+          </div>
+          <canvas class="photo"></canvas>
+          <video class="player"></video>
+          <div class="strip"></div>
+      </div>
+
+  <audio class="snap" src="https://wesbos.com/demos/photobooth/snap.mp3" hidden></audio>
+
+  <script src="scripts.js"></script>
+
+</body>
+</html>
